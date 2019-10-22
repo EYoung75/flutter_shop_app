@@ -44,7 +44,7 @@ class ProductItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
-              icon: Icon(Icons.shop),
+              icon: Icon(Icons.shopping_cart),
               color: Theme.of(context).accentColor,
               onPressed: () {},
             ),
