@@ -21,7 +21,8 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed("/product-details", arguments: product.id);
+          Navigator.of(context)
+              .pushNamed("/product-details", arguments: product.id);
         },
         child: GridTile(
           child: Image.network(
@@ -31,9 +32,12 @@ class ProductItem extends StatelessWidget {
           footer: GridTileBar(
             backgroundColor: Colors.black87,
             leading: IconButton(
-              icon: Icon(Icons.favorite),
+              icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
               color: Theme.of(context).accentColor,
-              onPressed: () {},
+              onPressed: () {
+                product.toggleFavorite();
+              },
             ),
             title: Text(
               product.title,
