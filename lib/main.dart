@@ -15,14 +15,15 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       builder: (ctx) => ProductsProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "MyShop",
         theme: ThemeData(
             primarySwatch: Colors.purple,
             accentColor: Colors.deepOrange,
             fontFamily: "Lato"),
+        home: ProductsOverviewScreen(),
         routes: {
-          "/": (ctx) => ProductsOverviewScreen(),
-          "/product-details": (ctx) => ProductDetailScreen()
+          ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()
         },
       ),
     );

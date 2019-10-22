@@ -4,6 +4,8 @@ import "package:provider/provider.dart";
 import "../providers/productsProvider.dart";
 
 class ProductDetailScreen extends StatelessWidget {
+  static const routeName = "/product-details";
+
   @override
   Widget build(BuildContext context) {
     final productId = ModalRoute.of(context).settings.arguments as String;
