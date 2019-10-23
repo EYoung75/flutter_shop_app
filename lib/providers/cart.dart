@@ -9,7 +9,7 @@ class CartItem {
   CartItem({
     @required this.id,
     @required this.title,
-    this.quantity,
+    @required this.quantity,
     @required this.price,
   });
 }
@@ -18,7 +18,7 @@ class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
-    return {...items};
+    return {..._items};
   }
 
   int get itemCount {

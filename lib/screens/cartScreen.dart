@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 
 import "../providers/cart.dart";
 import "package:provider/provider.dart";
+import "../widgets/cartItem.dart" as ci;
 
 class CartScreen extends StatelessWidget {
   static const routeName = "/cart";
@@ -50,6 +51,20 @@ class CartScreen extends StatelessWidget {
                     onPressed: () {},
                   )
                 ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cart.items.length,
+              itemBuilder: (ctx, i) => ci.CartItem(
+                cart.items.values.toList()[i].id,
+                cart.items.values.toList()[i].title,
+                cart.items.values.toList()[i].price,
+                cart.items.values.toList()[i].quantity,
               ),
             ),
           )
