@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:shop_app/providers/productsProvider.dart';
+import "package:provider/provider.dart";
 
 class UserProduct extends StatelessWidget {
   final String id;
@@ -9,6 +11,7 @@ class UserProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final productData = Provider.of<ProductsProvider>(context, listen: false);
     return ListTile(
       title: Text(title),
       leading: CircleAvatar(
@@ -26,7 +29,9 @@ class UserProduct extends StatelessWidget {
                 color: Theme.of(context).primaryColor),
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () {
+                productData.deleteProduct(id);
+              },
               color: Theme.of(context).errorColor,
             )
           ],

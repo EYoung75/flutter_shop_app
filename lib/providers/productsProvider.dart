@@ -58,6 +58,11 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteProduct(String id) {
+    _items.removeWhere((prod) => prod.id == id);
+    notifyListeners();
+  }
+
   void addProduct(Product product) {
     final newProduct = Product(
       title: product.title,
