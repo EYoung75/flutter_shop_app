@@ -65,9 +65,10 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addProduct(Product product) {
+  Future<void> addProduct(Product product) {
     const url = "https://shopapp-61088.firebaseio.com/products.json";
-    http.post(
+    return http
+        .post(
       url,
       body: json.encode({
         "title": product.title,
@@ -76,15 +77,18 @@ class ProductsProvider with ChangeNotifier {
         "price": product.price,
         "isFavorite": product.isFavorite
       }),
-    );
-    final newProduct = Product(
-      title: product.title,
-      description: product.description,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      id: DateTime.now().toString(),
-    );
-    _items.add(newProduct);
-    notifyListeners();
+    )
+        .then((res) {
+      print(json.decode(res.body));
+      final newProduct = Product(
+        title: product.title,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        id: json.decode(res.body)["name"],
+      );
+      _items.add(newProduct);
+      notifyListeners();
+    });
   }
 }
