@@ -1,6 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:shop_app/providers/productsProvider.dart';
+import "package:provider/provider.dart";
 
 import "../providers/product.dart";
+import "../providers/productsProvider.dart";
 
 class EditProductScreen extends StatefulWidget {
   static const routeName = "/editProduct";
@@ -50,6 +53,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState.save();
+    Provider.of<ProductsProvider>(context, listen: false)
+        .addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   Widget build(BuildContext context) {
@@ -182,10 +188,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         if (value.isEmpty) {
                           return "Please provide an image URL";
                         }
-                        if(!value.startsWith("http") && !value.startsWith("https")) {
+                        if (!value.startsWith("http") &&
+                            !value.startsWith("https")) {
                           return "Please enter a valid url";
                         }
-                        if(!value.endsWith(".png") && !value.endsWith(".jpg") && !value.endsWith("jpeg")) {
+                        if (!value.endsWith(".png") &&
+                            !value.endsWith(".jpg") &&
+                            !value.endsWith("jpeg")) {
                           return "Please provide and link to a valid image";
                         }
                         return null;
