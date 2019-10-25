@@ -19,6 +19,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _isInit = true;
   var _isLoading = false;
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<ProductsProvider>(context).fetchProducts();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -78,7 +82,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       drawer: AppDrawer(),
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
-          : ProductsGrid(_showOnlyFavorites),
+          : RefreshIndicator(
+              child: ProductsGrid(_showOnlyFavorites),
+              onRefresh: () => _refreshProducts(context),
+            ),
     );
   }
 }
