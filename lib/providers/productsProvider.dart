@@ -56,28 +56,6 @@ class ProductsProvider with ChangeNotifier {
     );
   }
 
-  Future<void> updateProduct(String id, Product newProduct) async {
-    final productIndex = _items.indexWhere((prod) => prod.id == id);
-    if (productIndex >= 0) {
-      final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
-      await http.patch(
-        url,
-        body: json.encode(
-          {
-            "title": newProduct.title,
-            "description": newProduct.description,
-            "imageUrl": newProduct.imageUrl,
-            "price": newProduct.price,
-          },
-        ),
-      );
-      _items[productIndex] = newProduct;
-      notifyListeners();
-    } else {
-      print("");
-    }
-  }
-
   Future<void> deleteProduct(String id) async {
     final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
@@ -143,6 +121,29 @@ class ProductsProvider with ChangeNotifier {
       notifyListeners();
     } catch (err) {
       throw err;
+    }
+  }
+
+
+  Future<void> updateProduct(String id, Product newProduct) async {
+    final productIndex = _items.indexWhere((prod) => prod.id == id);
+    if (productIndex >= 0) {
+      final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
+      await http.patch(
+        url,
+        body: json.encode(
+          {
+            "title": newProduct.title,
+            "description": newProduct.description,
+            "imageUrl": newProduct.imageUrl,
+            "price": newProduct.price,
+          },
+        ),
+      );
+      _items[productIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print("");
     }
   }
 }
