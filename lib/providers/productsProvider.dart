@@ -54,14 +54,42 @@ class ProductsProvider with ChangeNotifier {
     );
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((prod) => prod.id == id);
-    _items[productIndex] = newProduct;
-    notifyListeners();
+    if (productIndex >= 0) {
+      final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
+      await http.patch(
+        url,
+        body: json.encode(
+          {
+            "title": newProduct.title,
+            "description": newProduct.description,
+            "imageUrl": newProduct.imageUrl,
+            "price": newProduct.price,
+          },
+        ),
+      );
+      _items[productIndex] = newProduct;
+      notifyListeners();
+    } else {
+      print("");
+    }
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+    final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+
+    http.delete(url).then((res) {
+      if(res.statusCode >= 400) {
+        throw Exception();
+      }
+      existingProduct = null;
+    }).catchError((_) {
+      _items.insert(existingProductIndex, existingProduct);
+    });
+    _items.removeAt(existingProductIndex);
     notifyListeners();
   }
 
@@ -73,13 +101,12 @@ class ProductsProvider with ChangeNotifier {
       final List<Product> loadedProducts = [];
       data.forEach((prodId, prodData) {
         loadedProducts.add(Product(
-          id: prodId,
-          title: prodData["title"],
-          description: prodData["description"],
-          price: prodData["price"],
-          imageUrl: prodData["imageUrl"],
-          isFavorite: prodData["isFavorite"]
-        ));
+            id: prodId,
+            title: prodData["title"],
+            description: prodData["description"],
+            price: prodData["price"],
+            imageUrl: prodData["imageUrl"],
+            isFavorite: prodData["isFavorite"]));
       });
       _items = loadedProducts;
       notifyListeners();
