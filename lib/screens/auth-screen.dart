@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import "package:provider/provider.dart";
 import "../providers/auth.dart";
+import "../models/httpException.dart";
 
 enum AuthMode { Signup, Login }
 
@@ -95,13 +96,31 @@ class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
-    'email': '',
-    'password': '',
+    "email": "",
+    "password": "",
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("An error occurred"),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Okay"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -110,13 +129,28 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      Provider.of<Auth>(context, listen: false)
-          .signUp(_authData["email"], _authData["password"]);
-      // Sign user up
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false)
+            .login(_authData["email"], _authData["password"]);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .signUp(_authData["email"], _authData["password"]);
+      }
+    } on HttpException catch (err) {
+      var errorMessage = "Authentication failed";
+      if (err.toString().contains("EMAIL_EXISTS")) {
+        errorMessage = "This email address already exists";
+      } else if (err.toString().contains("INVALID_EMAIL")) {
+        errorMessage = "Invalid email";
+      } else if (err.toString().contains("WEAK_PASSWORD")) {
+        errorMessage = "Password too weak";
+      }
+      _showErrorDialog(errorMessage);
+    } catch (err) {
+      var errorMessage = "Unable to authenticate";
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -130,7 +164,7 @@ class _AuthCardState extends State<AuthCard> {
     } else {
       setState(() {
         _authMode = AuthMode.Login;
-      }); 
+      });
     }
   }
 
@@ -162,20 +196,15 @@ class _AuthCardState extends State<AuthCard> {
                     }
                   },
                   onSaved: (value) {
-                    _authData['email'] = value;
+                    _authData["email"] = value;
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                  },
                   onSaved: (value) {
-                    _authData['password'] = value;
+                    _authData["password"] = value;
                   },
                 ),
                 if (_authMode == AuthMode.Signup)
