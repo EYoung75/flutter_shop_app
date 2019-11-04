@@ -42,6 +42,10 @@ class ProductsProvider with ChangeNotifier {
     // ),
   ];
 
+  final String authToken;
+  
+  ProductsProvider(this.authToken, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -75,11 +79,11 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    const url = "https://shopapp-61088.firebaseio.com/products.json?auth=";
+    final url = "https://shopapp-61088.firebaseio.com/products.json?auth=$authToken";
     try {
       final res = await http.get(url);
       final data = json.decode(res.body) as Map<String, dynamic>;
-      if(data == null) {
+      if (data == null) {
         return;
       }
       final List<Product> loadedProducts = [];
@@ -126,7 +130,6 @@ class ProductsProvider with ChangeNotifier {
       throw err;
     }
   }
-
 
   Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((prod) => prod.id == id);
