@@ -80,9 +80,11 @@ class ProductsProvider with ChangeNotifier {
     existingProduct = null;
   }
 
-  Future<void> fetchProducts() async {
+  Future<void> fetchProducts([bool filterByUser = false]) async {
+    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
+
     var url =
-        'https://shopapp-61088.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
+        'https://shopapp-61088.firebaseio.com/products.json?auth=$authToken&$filterString';
     try {
       final res = await http.get(url);
       final data = json.decode(res.body) as Map<String, dynamic>;
