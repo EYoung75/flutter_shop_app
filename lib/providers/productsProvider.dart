@@ -82,7 +82,7 @@ class ProductsProvider with ChangeNotifier {
 
   Future<void> fetchProducts() async {
     var url =
-        "https://shopapp-61088.firebaseio.com/products.json?auth=$authToken";
+        'https://shopapp-61088.firebaseio.com/products.json?auth=$authToken&orderBy="creatorId"&equalTo="$userId"';
     try {
       final res = await http.get(url);
       final data = json.decode(res.body) as Map<String, dynamic>;
@@ -123,7 +123,7 @@ class ProductsProvider with ChangeNotifier {
           "description": product.description,
           "imageUrl": product.imageUrl,
           "price": product.price,
-          "isFavorite": product.isFavorite
+          "creatorId": userId
         }),
       );
       print(json.decode(res.body));
