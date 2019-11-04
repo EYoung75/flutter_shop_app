@@ -9,6 +9,7 @@ class Product with ChangeNotifier {
   final double price;
   final String imageUrl;
   bool isFavorite;
+  // final String authToken;
 
   Product({
     this.id,
@@ -17,13 +18,14 @@ class Product with ChangeNotifier {
     @required this.price,
     @required this.imageUrl,
     this.isFavorite = false,
+    // @required this.authToken
   });
 
-  Future<void> toggleFavorite() async {
+  Future<void> toggleFavorite(String token) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final url = "https://shopapp-61088.firebaseio.com/products/$id.json";
+    final url = "https://shopapp-61088.firebaseio.com/products/$id.json?auth=$token";
     try {
       final res = await http.patch(
         url,
