@@ -43,8 +43,9 @@ class ProductsProvider with ChangeNotifier {
   ];
 
   final String authToken;
+  final String userId;
 
-  ProductsProvider(this.authToken, this._items);
+  ProductsProvider(this.authToken, this.userId, this._items);
 
   List<Product> get items {
     return [..._items];
@@ -80,7 +81,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    final url =
+    var url =
         "https://shopapp-61088.firebaseio.com/products.json?auth=$authToken";
     try {
       final res = await http.get(url);
@@ -88,16 +89,20 @@ class ProductsProvider with ChangeNotifier {
       if (data == null) {
         return;
       }
+      url =  "https://shopapp-61088.firebaseio.com/userFavorites/$userId.json?auth=$authToken";
+      final getFavoriteStatus = await http.get(url);
+      final favData = json.decode(getFavoriteStatus.body);
       final List<Product> loadedProducts = [];
       data.forEach((prodId, prodData) {
         loadedProducts.add(
           Product(
-              id: prodId,
-              title: prodData["title"],
-              description: prodData["description"],
-              price: prodData["price"],
-              imageUrl: prodData["imageUrl"],
-              isFavorite: prodData["isFavorite"]),
+            id: prodId,
+            title: prodData["title"],
+            description: prodData["description"],
+            price: prodData["price"],
+            isFavorite: favData == null ? false : favData[prodId] ?? false,
+            imageUrl: prodData["imageUrl"],
+          ),
         );
       });
       _items = loadedProducts;
