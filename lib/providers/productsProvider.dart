@@ -75,7 +75,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    const url = "https://shopapp-61088.firebaseio.com/products.json";
+    const url = "https://shopapp-61088.firebaseio.com/products.json?auth=";
     try {
       final res = await http.get(url);
       final data = json.decode(res.body) as Map<String, dynamic>;
