@@ -1,7 +1,8 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 import "package:provider/provider.dart";
+
 import "../providers/auth.dart";
 import "../models/httpException.dart";
 
@@ -13,10 +14,7 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    // final transformConfig = Matrix4.rotationZ(-8 * pi / 180);
-    // transformConfig.translate(-10.0);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
           Container(
@@ -95,6 +93,7 @@ class AuthCard extends StatefulWidget {
 class _AuthCardState extends State<AuthCard>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
+
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     "email": "",
@@ -124,9 +123,6 @@ class _AuthCardState extends State<AuthCard>
     _opacityAnim = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
-    // _heightAnimation.addListener(
-    //   () => setState(() {}),
-    // );
   }
 
   @override
@@ -155,7 +151,6 @@ class _AuthCardState extends State<AuthCard>
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
-      // Invalid!
       return;
     }
     _formKey.currentState.save();
@@ -287,7 +282,8 @@ class _AuthCardState extends State<AuthCard>
                   ),
                 FlatButton(
                   child: Text(
-                      '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
+                    '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD',
+                  ),
                   onPressed: _switchAuthMode,
                   padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

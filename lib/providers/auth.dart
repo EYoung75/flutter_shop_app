@@ -1,14 +1,16 @@
 import "dart:async";
-import 'package:flutter/foundation.dart';
-import "package:http/http.dart" as http;
 import "dart:convert";
-import "../models/httpException.dart";
+
+import "package:flutter/foundation.dart";
+import "package:http/http.dart" as http;
 import "package:shared_preferences/shared_preferences.dart";
+
+import "../models/httpException.dart";
 
 class Auth with ChangeNotifier {
   String _token;
-  DateTime _expiryDate;
   String _userId;
+  DateTime _expiryDate;
   Timer _authTimer;
 
   bool get isAuth {
@@ -70,13 +72,13 @@ class Auth with ChangeNotifier {
 
   Future<void> signUp(String email, String password) async {
     final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[YOURKEYHERE]";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[YOUR_KEY_HERE]";
     return _authenticate(email, password, url);
   }
 
   Future<void> login(String email, String password) async {
     final url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[YOURKEYHERE]";
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[YOUR_KEY_HERE]";
     return _authenticate(email, password, url);
   }
 
@@ -122,4 +124,3 @@ class Auth with ChangeNotifier {
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
 }
- g

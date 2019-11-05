@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:shop_app/providers/productsProvider.dart';
 import "package:provider/provider.dart";
 
 import "../providers/product.dart";
@@ -52,7 +51,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
           "title": _editedProduct.title,
           "description": _editedProduct.description,
           "price": _editedProduct.price.toString(),
-          // "imageUrl": "",
         };
         _imageUrlController.text = _editedProduct.imageUrl;
       }
@@ -111,12 +109,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
             ],
           ),
         );
-      } 
+      }
     }
     setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
   }
 
   Widget build(BuildContext context) {
@@ -155,12 +153,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
-                            title: value,
-                            price: _editedProduct.price,
-                            description: _editedProduct.description,
-                            imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
-                            isFavorite: _editedProduct.isFavorite);
+                          title: value,
+                          price: _editedProduct.price,
+                          description: _editedProduct.description,
+                          imageUrl: _editedProduct.imageUrl,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
+                        );
                       },
                     ),
                     TextFormField(
@@ -175,12 +174,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
-                            title: _editedProduct.title,
-                            price: double.parse(value),
-                            description: _editedProduct.description,
-                            imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
-                            isFavorite: _editedProduct.isFavorite);
+                          title: _editedProduct.title,
+                          price: double.parse(value),
+                          description: _editedProduct.description,
+                          imageUrl: _editedProduct.imageUrl,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
+                        );
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -204,12 +204,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       focusNode: _descriptionFocusNode,
                       onSaved: (value) {
                         _editedProduct = Product(
-                            title: _editedProduct.title,
-                            price: _editedProduct.price,
-                            description: value,
-                            imageUrl: _editedProduct.imageUrl,
-                            id: _editedProduct.id,
-                            isFavorite: _editedProduct.isFavorite);
+                          title: _editedProduct.title,
+                          price: _editedProduct.price,
+                          description: value,
+                          imageUrl: _editedProduct.imageUrl,
+                          id: _editedProduct.id,
+                          isFavorite: _editedProduct.isFavorite,
+                        );
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -251,12 +252,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             focusNode: _imageUrlFocusNode,
                             onSaved: (value) {
                               _editedProduct = Product(
-                                  title: _editedProduct.title,
-                                  price: _editedProduct.price,
-                                  description: _editedProduct.description,
-                                  imageUrl: value,
-                                  id: _editedProduct.id,
-                                  isFavorite: _editedProduct.isFavorite);
+                                title: _editedProduct.title,
+                                price: _editedProduct.price,
+                                description: _editedProduct.description,
+                                imageUrl: value,
+                                id: _editedProduct.id,
+                                isFavorite: _editedProduct.isFavorite,
+                              );
                             },
                             validator: (value) {
                               if (value.isEmpty) {

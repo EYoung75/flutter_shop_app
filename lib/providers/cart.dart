@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import "package:flutter/foundation.dart";
 
 class CartItem {
   final String id;
@@ -41,20 +41,23 @@ class Cart with ChangeNotifier {
   ) {
     if (_items.containsKey(id)) {
       _items.update(
-          id,
-          (existing) => CartItem(
-              id: existing.id,
-              title: existing.title,
-              price: existing.price,
-              quantity: (existing.quantity + 1)));
+        id,
+        (existing) => CartItem(
+          id: existing.id,
+          title: existing.title,
+          price: existing.price,
+          quantity: (existing.quantity + 1),
+        ),
+      );
     } else {
       _items.putIfAbsent(
         id,
         () => CartItem(
-            id: DateTime.now().toString(),
-            title: title,
-            price: price,
-            quantity: 1),
+          id: DateTime.now().toString(),
+          title: title,
+          price: price,
+          quantity: 1,
+        ),
       );
     }
     notifyListeners();
@@ -73,11 +76,12 @@ class Cart with ChangeNotifier {
       _items.update(
         productId,
         (existingCartItem) => CartItem(
-            id: existingCartItem.id,
-            title: existingCartItem.title,
-            price: existingCartItem.price,
-            quantity: existingCartItem.quantity - 1),
-      );  
+          id: existingCartItem.id,
+          title: existingCartItem.title,
+          price: existingCartItem.price,
+          quantity: existingCartItem.quantity - 1,
+        ),
+      );
     } else {
       _items.remove(productId);
     }

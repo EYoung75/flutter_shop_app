@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 import "../providers/cart.dart";
-import "package:provider/provider.dart";
-import "../widgets/cartItem.dart" as ci;
 import "../providers/orders.dart";
+import "../widgets/cartItem.dart" as ci;
 
 class CartScreen extends StatelessWidget {
   static const routeName = "/cart";
@@ -11,7 +11,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
-
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Your cart"),
